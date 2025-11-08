@@ -6,14 +6,8 @@
   <title>Somnath Damale — DevOps · Cloud · AI</title>
   <link rel="stylesheet" href="style.css">
   <script defer src="script.js"></script>
-  <script defer src="assets/game/game.js"></script>
 </head>
 <body class="dark-mode">
-  <!-- Glowing moon -->
-  <div id="moon"></div>
-  <!-- Mist layer -->
-  <canvas id="mist-canvas"></canvas>
-
   <header class="hero" id="hero">
     <nav class="nav">
       <div class="brand">Somnath Damale</div>
@@ -31,25 +25,24 @@
     </nav>
 
     <div class="hero-content solid-header" id="hero-content">
-      <h1 id="typewriter" aria-live="polite" data-text='["Deploying DevOpsXCloud v2.0...", "DevOps · Cloud · DevSecOps · AI", "Engineering the Future:|Where Cloud Meets Intelligence"]'></h1>
+      <h1 id="typewriter" aria-live="polite"
+        data-text='["Deploying DevOpsXCloud v2.0...", "DevOps · Cloud · DevSecOps · AI", "Engineering the Future:|Where Cloud Meets Intelligence"]'></h1>
       <p class="lead">I build secure CI/CD pipelines, automate cloud infra, and integrate AI into production workflows.</p>
     </div>
 
-    <!-- Visual layers -->
-    <canvas id="particle-canvas" aria-hidden="true"></canvas>
-    <div id="cosmic-layer" aria-hidden="true"></div>
-    <div id="cloud-layer" aria-hidden="true"></div>
-    <canvas id="day-canvas" aria-hidden="true"></canvas>
-    <canvas id="trail-canvas" aria-hidden="true"></canvas>
-    <div id="hud-layer" aria-hidden="true"></div>
+    <canvas id="particle-canvas"></canvas>
+    <canvas id="day-canvas"></canvas>
+    <canvas id="trail-canvas"></canvas>
   </header>
 
   <main>
-    <section id="about" class="section glass"><h2>About Me</h2>
+    <section id="about" class="section glass">
+      <h2>About Me</h2>
       <p>Analytical and detail-oriented DevOps Engineer with hands-on experience in CI/CD, automation, and cloud infrastructure.</p>
     </section>
 
-    <section id="skills" class="section glass"><h2>Skills</h2>
+    <section id="skills" class="section glass">
+      <h2>Skills</h2>
       <div class="card-container">
         <div class="card">AWS</div>
         <div class="card">Docker</div>
@@ -63,40 +56,31 @@
     <section id="projects" class="section glass">
       <div style="display:flex;align-items:center;justify-content:space-between">
         <h2>Projects</h2>
-        <div style="display:flex;gap:10px;align-items:center">
-          <button id="refresh-repos-section" class="btn">🔁 Refresh Projects</button>
-        </div>
+        <button id="refresh-repos-section" class="btn">🔁 Refresh Projects</button>
       </div>
       <div id="projects-list" class="card-container"></div>
     </section>
 
-    <section id="resume" class="section glass"><h2>Resume</h2>
-      <div class="resume-viewer">
-        <iframe src="assets/pdf/Somnath_Damale_DevOps_Resume.pdf" title="Resume"></iframe>
-        <div class="resume-actions"><a class="btn" href="assets/pdf/Somnath_Damale_DevOps_Resume.pdf" download>Download Resume (PDF)</a></div>
+    <section id="resume" class="section glass">
+      <h2>Resume</h2>
+      <iframe src="assets/pdf/Somnath_Damale_DevOps_Resume.pdf" title="Resume"></iframe>
+      <div class="resume-actions">
+        <a class="btn" href="assets/pdf/Somnath_Damale_DevOps_Resume.pdf" download>Download Resume</a>
       </div>
     </section>
 
-    <section id="connect" class="section glass"><h2>Connect</h2>
+    <section id="connect" class="section glass">
+      <h2>Connect</h2>
       <div class="social-icons">
-        <a class="icon" href="https://www.linkedin.com/in/somnathdamale" target="_blank"><img src="assets/icons/linkedin.svg" alt="LinkedIn"></a>
-        <a class="icon" href="https://github.com/i-damale" target="_blank"><img src="assets/icons/github.svg" alt="GitHub"></a>
-        <a class="icon" href="mailto:somnath.damale@gmail.com"><img src="assets/icons/email.svg" alt="Email"></a>
+        <a href="https://www.linkedin.com/in/somnathdamale" target="_blank"><img src="assets/icons/linkedin.svg" alt="LinkedIn"></a>
+        <a href="https://github.com/i-damale" target="_blank"><img src="assets/icons/github.svg" alt="GitHub"></a>
+        <a href="mailto:somnath.damale@gmail.com"><img src="assets/icons/email.svg" alt="Email"></a>
       </div>
     </section>
   </main>
 
-  <footer id="site-footer"><p id="footer-text">© 2025 Somnath Damale | DevOps · Cloud · AI</p></footer>
-
-  <!-- Game Button -->
-  <button id="game-button" title="Play game">🎮</button>
-
-  <!-- Game Modal -->
-  <div id="game-modal" aria-hidden="true">
-    <div id="game-box">
-      <button id="game-close" aria-label="Close game">✖</button>
-      <div id="game-wrapper"></div>
-    </div>
-  </div>
+  <footer>
+    <p>© 2025 Somnath Damale | DevOps · Cloud · AI</p>
+  </footer>
 </body>
 </html>
