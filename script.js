@@ -17,7 +17,7 @@
   step();
 })();
 
-// Particle Animation
+// Particles
 (function(){
   const c=document.getElementById('particle-canvas');
   if(!c)return;
@@ -48,28 +48,37 @@
   const viewBtn=document.getElementById('view-projects-cta');
   const projects=document.getElementById('projects');
   const theme=document.getElementById('theme-toggle');
-  viewBtn.addEventListener('click',()=>projects.scrollIntoView({behavior:'smooth'}));
-  theme.addEventListener('click',()=>{
-    const day=document.body.classList.toggle('day-mode');
-    theme.textContent=day?'🌙':'☀️';
-  });
+  if(viewBtn && projects){
+    viewBtn.addEventListener('click',()=>projects.scrollIntoView({behavior:'smooth'}));
+  }
+  if(theme){
+    theme.addEventListener('click',()=>{
+      const day=document.body.classList.toggle('day-mode');
+      theme.textContent=day?'🌙':'☀️';
+    });
+  }
 })();
 
 // Fetch GitHub Projects
 (function(){
   const refresh=document.getElementById('refresh-repos');
   const list=document.getElementById('projects-list');
+  if(!refresh || !list)return;
   refresh.addEventListener('click',async()=>{
     refresh.textContent='Loading...';
-    const res=await fetch('https://api.github.com/users/i-damale/repos');
-    const data=await res.json();
-    list.innerHTML='';
-    data.sort((a,b)=>new Date(b.pushed_at)-new Date(a.pushed_at));
-    data.forEach(repo=>{
-      const a=document.createElement('a');
-      a.href=repo.html_url;a.target='_blank';a.className='card';a.textContent=repo.name;
-      list.appendChild(a);
-    });
+    try{
+      const res=await fetch('https://api.github.com/users/i-damale/repos');
+      const data=await res.json();
+      list.innerHTML='';
+      data.sort((a,b)=>new Date(b.pushed_at)-new Date(a.pushed_at));
+      data.forEach(repo=>{
+        const a=document.createElement('a');
+        a.href=repo.html_url;a.target='_blank';a.className='card';a.textContent=repo.name;
+        list.appendChild(a);
+      });
+    }catch(e){
+      list.innerHTML='<p>Error fetching repositories.</p>';
+    }
     refresh.textContent='🔁 Refresh Projects';
   });
 })();
