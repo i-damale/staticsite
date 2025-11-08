@@ -28,7 +28,7 @@
     let display = cur.slice(0, charIndex);
     if(tIndex === 0){ // keep first 'X' neon pink if present and within typed chars
       if(display.includes('X')){
-        display = display.replace('X', '<span class="neon-pink">X</span>');
+        display = display.replace('X', '<span class="neon-orange">X</span>');
       }
     }
     if(tIndex === 2){ // split at '|' to color left part neon-orange
