@@ -9,30 +9,34 @@
 </head>
 <body class="dark-mode">
   <header class="hero" id="hero">
-    <nav class="nav">
+    <nav class="nav" id="top-nav">
       <div class="brand">Somnath Damale</div>
-      <ul class="nav-links">
+
+      <ul class="nav-links" id="nav-links">
         <li><a href="#about">About</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#projects">Projects</a></li>
         <li><a href="#resume">Resume</a></li>
         <li><a href="#connect">Connect</a></li>
       </ul>
+
       <div class="controls">
         <button id="view-projects-cta" class="btn cta">View Projects</button>
-        <button id="theme-toggle" class="btn toggle">☀️</button>
+        <button id="theme-toggle" class="btn toggle" aria-pressed="false" title="Toggle theme">☀️</button>
       </div>
     </nav>
 
-    <div class="hero-content solid-header">
-      <h1 id="typewriter"
-          data-text='["Deploying DevOpsXCloud v2.0...", "DevOps · Cloud · DevSecOps · AI",
-          "Engineering the Future:|Where Cloud Meets Intelligence"]'></h1>
+    <div class="hero-content solid-header" id="hero-content">
+      <h1 id="typewriter" aria-live="polite"
+          data-text='["Deploying DevOpsXCloud v2.0...", "DevOps. Cloud. DevSecOps. AI", "Engineering the Future:|Where Cloud meets Intelligence"]'></h1>
+
       <p class="lead">I build secure CI/CD pipelines, automate cloud infra, and integrate AI into production workflows.</p>
     </div>
 
-    <canvas id="particle-canvas"></canvas>
-    <canvas id="scene-canvas"></canvas>
+    <!-- particle and day scene canvases -->
+    <canvas id="particle-canvas" aria-hidden="true"></canvas>
+    <canvas id="scene-canvas" aria-hidden="true"></canvas>
+    <canvas id="trail-canvas" aria-hidden="true"></canvas>
   </header>
 
   <main>
@@ -43,41 +47,50 @@
 
     <section id="skills" class="section glass">
       <h2>Skills</h2>
-      <div class="card-container">
-        <div class="card">AWS</div><div class="card">Docker</div><div class="card">Kubernetes</div>
-        <div class="card">Terraform</div><div class="card">Jenkins</div><div class="card">Python</div>
+      <div class="card-container" id="skills-list">
+        <!-- skills generated/filled by script.js -->
       </div>
     </section>
+
+    <!-- anchor to offset the fixed header so projects header is not hidden -->
+    <div id="projects-offset"></div>
 
     <section id="projects" class="section glass">
       <div class="projects-header">
         <h2>Projects</h2>
-        <button id="refresh-repos" class="btn">🔁 Refresh Projects</button>
+        <button id="refresh-repos" class="btn" title="Refresh Projects">🔁 Refresh Projects</button>
       </div>
+
       <div id="projects-list" class="card-container"></div>
+      <p class="muted">Click the refresh button to fetch your latest public GitHub repositories.</p>
     </section>
 
     <section id="resume" class="section glass">
       <h2>Resume</h2>
-      <iframe src="assets/pdf/Somnath_Damale_DevOps_Resume.pdf"
-              title="Resume" style="width:100%;height:88vh;border:none;border-radius:8px;"></iframe>
-      <div class="resume-actions">
+      <iframe src="assets/pdf/Somnath_Damale_DevOps_Resume.pdf" title="Resume"
+              style="width:100%;height:88vh;border:none;border-radius:8px;"></iframe>
+
+      <div class="resume-actions" style="margin-top:12px;">
         <a class="btn" href="assets/pdf/Somnath_Damale_DevOps_Resume.pdf" download>Download Resume (PDF)</a>
       </div>
 
       <div class="extra-experience">
         <h3>Additional Experience</h3>
         <ul>
-          <li><strong>Amazon (CSA)</strong> – Reduced escalations by 25%, improved fraud detection and reporting efficiency.</li>
-          <li><strong>Voice Of Gamers Pvt Ltd</strong> – Boosted team productivity by 25%, scaled social presence to 150K followers.</li>
-          <li><strong>Keyence (Sales Engineer)</strong> – Improved production quality by 50% and sales by 30% QoQ using analytics.</li>
+          <li><strong>Amazon — CSA</strong> • Mumbai, Maharashtra (10/2021 - 05/2022) — Resolved customer issues end-to-end, performed RCA, reduced escalations by 25% and built escalation trackers for leadership.</li>
+          <li><strong>Voice Of Gamers Pvt Ltd — Support Specialist</strong> • Mumbai, Maharashtra (06/2019 - 01/2020) — Optimized workflows, scaled social presence to 150,000 followers, improved app upgrade techniques and team productivity.</li>
+          <li><strong>Keyence — Sales Engineer</strong> • New Delhi (01/2019 - 05/2019) — Implemented automation solutions, increased production efficiency and improved reporting dashboards for KPIs.</li>
         </ul>
 
         <h3>Education & Certifications</h3>
         <ul>
-          <li><strong>Google Data Analytics Professional Certificate</strong> – Coursera (8-course specialization)</li>
-          <li><strong>Bachelor’s Degree in Engineering</strong> – Pune University</li>
-          <li><a href="https://www.credly.com/badges" target="_blank">View Verified Certificates</a></li>
+          <li><a href="https://www.coursera.org/professional-certificates/google-data-analytics" target="_blank" rel="noopener">Google Data Analytics Professional Certificate</a> — Coursera (Completed)</li>
+          <li><strong>Bachelor of Engineering</strong> — Pune University</li>
+          <li>Other certifications (click to open):</li>
+          <ul>
+            <li><a href="#" id="cert-link-1" target="_blank" rel="noopener">Certification 1 — link (paste URL)</a></li>
+            <li><a href="#" id="cert-link-2" target="_blank" rel="noopener">Certification 2 — link (paste URL)</a></li>
+          </ul>
         </ul>
       </div>
     </section>
@@ -85,8 +98,8 @@
     <section id="connect" class="section glass">
       <h2>Connect</h2>
       <div class="social-icons">
-        <a href="https://www.linkedin.com/in/somnathdamale" target="_blank"><img src="assets/icons/linkedin.svg" alt="LinkedIn"></a>
-        <a href="https://github.com/i-damale" target="_blank"><img src="assets/icons/github.svg" alt="GitHub"></a>
+        <a href="https://www.linkedin.com/in/somnathdamale" target="_blank" rel="noopener"><img src="assets/icons/linkedin.svg" alt="LinkedIn"></a>
+        <a href="https://github.com/i-damale" target="_blank" rel="noopener"><img src="assets/icons/github.svg" alt="GitHub"></a>
         <a href="mailto:somnath.damale@gmail.com"><img src="assets/icons/email.svg" alt="Email"></a>
       </div>
     </section>
