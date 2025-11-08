@@ -1,115 +1,261 @@
-// === Typewriter ===
+// ----------------- TYPEWRITER (robust) -----------------
 (function(){
-  const el=document.getElementById('typewriter');
-  if(!el)return;
-  const lines=JSON.parse(el.dataset.text);
-  let i=0,j=0,forward=true;
-  function step(){
-    const text=lines[i];
-    if(forward){j++;if(j>text.length){forward=false;setTimeout(step,1000);return;}}
-    else{j--;if(j===0){forward=true;i=(i+1)%lines.length;}}
-    let out=text.slice(0,j);
-    if(i===0)out=out.replace('X','<span class="neon-pink">X</span>');
-    if(i===2){const parts=text.split('|');
-      out=`<span class='neon-orange'>${parts[0]}</span>${parts[1].slice(0,Math.max(0,j-parts[0].length))}`;}
-    el.innerHTML=out;
-    setTimeout(step,90);
-  }
-  step();
-})();
-
-// === Particles ===
-(function(){
-  const c=document.getElementById('particle-canvas'); if(!c)return;
-  const x=c.getContext('2d'); let w,h;
-  function resize(){w=c.width=innerWidth;h=c.height=innerHeight;} resize(); addEventListener('resize',resize);
-  const p=Array.from({length:100},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2+1,
-    vx:(Math.random()-.5)*.6,vy:(Math.random()-.5)*.6,c:'#00ffcc'}));
-  const mouse={x:-999,y:-999};
-  addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;});
-  addEventListener('mouseleave',()=>{mouse.x=-999;mouse.y=-999;});
-  function loop(){
-    x.clearRect(0,0,w,h);
-    for(const pt of p){
-      const dx=mouse.x-pt.x,dy=mouse.y-pt.y,d=Math.hypot(dx,dy);
-      if(d<150){pt.vx-=dx/d*0.03;pt.vy-=dy/d*0.03;}
-      pt.x+=pt.vx;pt.y+=pt.vy;pt.vx*=0.98;pt.vy*=0.98;
-      if(pt.x<0)pt.x=w;if(pt.x>w)pt.x=0;if(pt.y<0)pt.y=h;if(pt.y>h)pt.y=0;
-      x.beginPath();x.fillStyle=pt.c;x.arc(pt.x,pt.y,pt.r,0,Math.PI*2);x.fill();
-    }
-    requestAnimationFrame(loop);
-  }
-  loop();
-})();
-
-// === Day Scene (Sun + Clouds + Birds) ===
-(function(){
-  const c=document.getElementById('scene-canvas'); if(!c)return;
-  const ctx=c.getContext('2d'); let w,h; function resize(){w=c.width=innerWidth;h=c.height=innerHeight;} resize();
-  addEventListener('resize',resize);
-  let t=0;
-  function loop(){
-    ctx.clearRect(0,0,w,h);
-    if(document.body.classList.contains('day-mode')){
-      const grd=ctx.createLinearGradient(0,0,0,h);
-      grd.addColorStop(0,'#a8d8ff'); grd.addColorStop(1,'#fff5e6'); ctx.fillStyle=grd; ctx.fillRect(0,0,w,h);
-      // Sun
-      const sunY=100+Math.sin(t/200)*10;
-      const sunX=w*0.8;
-      ctx.beginPath();ctx.arc(sunX,sunY,60,0,Math.PI*2);
-      ctx.fillStyle='#ffeb3b';ctx.shadowBlur=40;ctx.shadowColor='rgba(255,230,100,0.6)';ctx.fill();ctx.shadowBlur=0;
-      // Clouds
-      for(let i=0;i<6;i++){
-        const cx=(t*0.2+i*250)% (w+200)-200;
-        const cy=80+i*20;
-        ctx.fillStyle='rgba(255,255,255,0.8)';
-        ctx.beginPath();ctx.ellipse(cx,cy,60,25,0,0,Math.PI*2);ctx.fill();
+  const el = document.getElementById('typewriter');
+  if(!el) return;
+  const textsRaw = el.getAttribute('data-text');
+  let texts;
+  try { texts = JSON.parse(textsRaw); } catch(e){ texts = [textsRaw]; }
+  let tIndex = 0, charIndex = 0, direction = 1; // direction 1 typing, -1 deleting
+  const speed = 70; // base speed in ms
+  function tick(){
+    const cur = texts[tIndex];
+    if(direction === 1){ // typing
+      charIndex++;
+      if(charIndex > cur.length){
+        direction = -1;
+        setTimeout(tick, 900);
+        return;
       }
-      // Hills and ground
-      ctx.fillStyle='#88c86f';
-      ctx.beginPath();ctx.ellipse(w*0.3,h-20,250,100,0,0,Math.PI*2);ctx.fill();
-      ctx.beginPath();ctx.ellipse(w*0.7,h,300,120,0,0,Math.PI*2);ctx.fill();
-      // Lake
-      ctx.fillStyle='#6cc1ff';ctx.beginPath();ctx.ellipse(w*0.5,h-40,200,40,0,0,Math.PI*2);ctx.fill();
-      // Birds
-      ctx.strokeStyle='#333';ctx.lineWidth=2;
-      for(let i=0;i<4;i++){const bx=(t*0.6+i*180)%w;const by=100+Math.sin(t/50+i)*10;
-        ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx+10,by-4);ctx.moveTo(bx,by);ctx.lineTo(bx-10,by-4);ctx.stroke();}
+    } else { // deleting
+      charIndex--;
+      if(charIndex === 0){
+        direction = 1;
+        tIndex = (tIndex + 1) % texts.length;
+      }
     }
-    t++;
-    requestAnimationFrame(loop);
+
+    // render with special rules
+    let display = cur.slice(0, charIndex);
+    if(tIndex === 0){ // keep first 'X' neon pink if present and within typed chars
+      if(display.includes('X')){
+        display = display.replace('X', '<span class="neon-pink">X</span>');
+      }
+    }
+    if(tIndex === 2){ // split at '|' to color left part neon-orange
+      const parts = cur.split('|');
+      const leftLen = parts[0].length;
+      if(charIndex <= leftLen){
+        display = '<span class="neon-orange">' + parts[0].slice(0, charIndex) + '</span>';
+      } else {
+        display = '<span class="neon-orange">' + parts[0] + '</span>' + parts[1].slice(0, charIndex - leftLen);
+      }
+    }
+    el.innerHTML = display;
+    setTimeout(tick, speed + (direction === -1 ? 20 : 0));
   }
-  loop();
+  tick();
 })();
 
-// === Theme + Buttons + GitHub Fetch ===
+// ----------------- PARTICLES (repel, variable sizes) -----------------
 (function(){
-  const theme=document.getElementById('theme-toggle');
-  const view=document.getElementById('view-projects-cta');
-  const section=document.getElementById('projects');
-  if(view&&section){view.addEventListener('click',()=>section.scrollIntoView({behavior:'smooth'}));}
-  if(theme){theme.addEventListener('click',()=>{
-    const d=document.body.classList.toggle('day-mode');
-    theme.textContent=d?'🌙':'☀️';
-  });}
+  const canvas = document.getElementById('particle-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize(){ W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+  resize(); addEventListener('resize', resize);
 
-  const refresh=document.getElementById('refresh-repos');
-  const list=document.getElementById('projects-list');
-  if(refresh&&list){
-    refresh.addEventListener('click',async()=>{
-      refresh.textContent='Loading...';
-      try{
-        const res=await fetch('https://api.github.com/users/i-damale/repos');
-        const data=await res.json();
-        list.innerHTML='';
-        data.sort((a,b)=>new Date(b.pushed_at)-new Date(a.pushed_at));
-        data.forEach(r=>{
-          const a=document.createElement('a');
-          a.href=r.html_url;a.target='_blank';a.className='card';a.textContent=r.name;
-          list.appendChild(a);
-        });
-      }catch{list.innerHTML='<p>Failed to load projects.</p>';}
-      refresh.textContent='🔁 Refresh Projects';
+  const particles = [];
+  const N = Math.max(90, Math.floor((innerWidth*innerHeight)/9000));
+  for(let i=0;i<N;i++){
+    const size = (Math.random() < 0.7) ? (Math.random()*1.2 + 0.6) : (Math.random()*3 + 1.4);
+    particles.push({
+      x: Math.random()*W,
+      y: Math.random()*H,
+      r: size,
+      vx: (Math.random()-0.5)*0.6,
+      vy: (Math.random()-0.5)*0.6,
+      baseR: size,
+      col: (Math.random() < 0.5) ? '#00fff0' : (Math.random() < 0.5 ? '#8b00ff' : '#66fcf1')
     });
   }
+
+  const mouse = { x: -9999, y: -9999 };
+  addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+  addEventListener('mouseleave', ()=> { mouse.x = -9999; mouse.y = -9999; });
+
+  function step(){
+    ctx.clearRect(0,0,W,H);
+    for(const p of particles){
+      // repulsion from mouse
+      const dx = p.x - mouse.x, dy = p.y - mouse.y;
+      const dist = Math.hypot(dx,dy);
+      if(mouse.x > -9998 && dist < 160){
+        const force = (160 - dist)/160;
+        const ang = Math.atan2(dy,dx);
+        p.vx += Math.cos(ang) * (0.9 * force);
+        p.vy += Math.sin(ang) * (0.9 * force);
+      } else {
+        p.vx += (Math.random()-0.5) * 0.01;
+        p.vy += (Math.random()-0.5) * 0.01;
+      }
+      p.vx *= 0.985; p.vy *= 0.985;
+      p.x += p.vx; p.y += p.vy;
+
+      // wrap
+      if(p.x < -50) p.x = W + 50;
+      if(p.x > W + 50) p.x = -50;
+      if(p.y < -50) p.y = H + 50;
+      if(p.y > H + 50) p.y = -50;
+
+      const tw = 0.85 + 0.35 * Math.sin((Date.now()/900) + p.baseR);
+      ctx.beginPath(); ctx.fillStyle = p.col; ctx.globalAlpha = 0.96 * tw; ctx.arc(p.x,p.y,p.r*tw,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.globalAlpha = 0.06 * tw; ctx.fillStyle = p.col; ctx.arc(p.x,p.y,(p.r*8)*tw,0,Math.PI*2); ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+    requestAnimationFrame(step);
+  }
+  step();
+
+})();
+
+// ----------------- SCENE (day: sun, clouds, hills, lake, birds) -----------------
+(function(){
+  const canvas = document.getElementById('scene-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize(){ W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+  resize(); addEventListener('resize', resize);
+
+  let t = 0;
+  // cloud definitions
+  const clouds = Array.from({length:5}, (_,i)=>({
+    x: Math.random()*innerWidth,
+    y: 50 + Math.random()*130,
+    w: 260 + Math.random()*420,
+    dir: Math.random()>.5 ? 1 : -1,
+    speed: 0.06 + Math.random()*0.12
+  }));
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    if(document.body.classList.contains('day-mode')){
+      // sky
+      const g = ctx.createLinearGradient(0,0,0,H*0.7); g.addColorStop(0,'#9fd9ff'); g.addColorStop(1,'#fff5e6');
+      ctx.fillStyle = g; ctx.fillRect(0,0,W,H*0.7);
+
+      // sun
+      const sunX = W * 0.82;
+      const sunY = 110 + Math.sin(t/1200)*6;
+      ctx.beginPath(); ctx.fillStyle = 'rgba(255,200,80,0.98)'; ctx.shadowBlur = 40; ctx.shadowColor = 'rgba(255,200,80,0.22)'; ctx.arc(sunX,sunY,52,0,Math.PI*2); ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // clouds (move & possibly dim the sun lightly when overlapping)
+      let sunDim = 0;
+      clouds.forEach((c,i)=>{
+        c.x += c.dir * c.speed * (1 + Math.sin(t/800)*0.08);
+        if(c.x > W + 200) c.x = -300 - Math.random()*100;
+        if(c.x < -400) c.x = W + 100 + Math.random()*100;
+        ctx.fillStyle = 'rgba(255,255,255,0.9)';
+        ctx.beginPath(); ctx.ellipse(c.x, c.y, c.w*0.55, c.w*0.26, 0, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(c.x + c.w*0.22, c.y - 8, c.w*0.35, c.w*0.18, 0, 0, Math.PI*2); ctx.fill();
+
+        // overlap with sun
+        const dx = c.x - sunX, dy = c.y - sunY, dist = Math.hypot(dx,dy);
+        const cover = Math.max(0, ((52 + c.w*0.2) - dist) / (52 + c.w*0.2));
+        sunDim = Math.max(sunDim, cover);
+      });
+
+      if(sunDim > 0.02){
+        ctx.beginPath(); ctx.fillStyle = 'rgba(0,0,0,' + (sunDim*0.08) + ')'; ctx.arc(sunX,sunY,52*2.2,0,Math.PI*2); ctx.fill();
+      }
+
+      // hills
+      ctx.fillStyle = '#8fcf7a'; ctx.beginPath(); ctx.ellipse(W*0.22,H*0.75,W*0.6,H*0.35,0,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#7ac46a'; ctx.beginPath(); ctx.ellipse(W*0.72,H*0.78,W*0.5,H*0.28,0,0,Math.PI*2); ctx.fill();
+
+      // lake
+      ctx.fillStyle = '#6fc8ff'; ctx.beginPath(); ctx.ellipse(W*0.5,H*0.85,W*0.25,H*0.06,0,0,Math.PI*2); ctx.fill();
+
+      // foreground grass
+      ctx.fillStyle = '#4caf50'; ctx.fillRect(0,H*0.88,W,H*0.12);
+
+      // birds - simple shapes moving
+      ctx.strokeStyle = '#222'; ctx.lineWidth = 1.5;
+      for(let i=0;i<5;i++){
+        const bx = (t*0.6 + i*180) % (W + 160) - 80;
+        const by = 90 + Math.sin((t/80) + i) * 8;
+        ctx.beginPath(); ctx.moveTo(bx,by); ctx.quadraticCurveTo(bx+8,by-6,bx+16,by); ctx.quadraticCurveTo(bx+24,by-6,bx+32,by); ctx.stroke();
+      }
+    }
+    t++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ----------------- SKILLS (fill from resume-like list) -----------------
+(function(){
+  const skills = [
+    "AWS", "Azure", "GCP", "Docker", "Kubernetes", "Terraform",
+    "Ansible", "Jenkins", "CI/CD", "Git", "Linux", "Python",
+    "Bash/Shell", "SQL", "Prometheus", "Grafana", "Monitoring", "DevSecOps"
+  ];
+  const container = document.getElementById('skills-list');
+  if(!container) return;
+  container.innerHTML = '';
+  skills.forEach(s => {
+    const d = document.createElement('div'); d.className = 'card'; d.textContent = s;
+    container.appendChild(d);
+  });
+})();
+
+// ----------------- THEME, VIEW PROJECTS, REFRESH PROJECTS -----------------
+(function(){
+  const themeBtn = document.getElementById('theme-toggle');
+  const viewBtn = document.getElementById('view-projects-cta');
+  const projectsSection = document.getElementById('projects');
+  const refreshBtn = document.getElementById('refresh-repos');
+  const projectsList = document.getElementById('projects-list');
+
+  // theme toggle
+  if(themeBtn){
+    themeBtn.addEventListener('click', ()=>{
+      const isDay = document.body.classList.toggle('day-mode');
+      themeBtn.textContent = isDay ? '🌙' : '☀️';
+    });
+  }
+
+  // view projects — scroll with offset to account for fixed header
+  if(viewBtn && projectsSection){
+    viewBtn.addEventListener('click', ()=>{
+      const headerOffset = document.getElementById('top-nav')?.offsetHeight || 78;
+      const elementPosition = projectsSection.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - headerOffset - 10; // small extra padding
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+    });
+  }
+
+  // refresh projects (fetch from GitHub) — button is in projects-header; ensure clickable
+  if(refreshBtn && projectsList){
+    refreshBtn.addEventListener('click', async ()=>{
+      refreshBtn.disabled = true;
+      const old = refreshBtn.textContent;
+      refreshBtn.textContent = 'Loading...';
+      try{
+        const res = await fetch('https://api.github.com/users/i-damale/repos?per_page=100');
+        if(!res.ok) throw new Error('GitHub error ' + res.status);
+        const data = await res.json();
+        data.sort((a,b)=> new Date(b.pushed_at) - new Date(a.pushed_at));
+        projectsList.innerHTML = '';
+        data.forEach(r => {
+          const a = document.createElement('a');
+          a.className = 'card project-card';
+          a.href = r.html_url;
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.textContent = r.name + (r.description ? ' — ' + r.description.slice(0,80) : '');
+          projectsList.appendChild(a);
+        });
+      }catch(e){
+        projectsList.innerHTML = '<p style="color:#ff9999">Failed to fetch repositories. Please try again later.</p>';
+        console.error(e);
+      } finally {
+        refreshBtn.disabled = false;
+        refreshBtn.textContent = old;
+      }
+    });
+  }
+
 })();
