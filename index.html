@@ -57,5 +57,23 @@
   </main>
 
   <footer id="site-footer"><p id="footer-text">© 2025 Somnath Damale | DevOps · Cloud · AI</p></footer>
+
+  <!-- Easter egg game button -->
+  <button id="game-button" title="Play a game">🎮</button>
+  <!-- sound toggle -->
+  <button id="sound-toggle" title="Toggle ambient sound">🔈</button>
+
+  <!-- Game modal -->
+  <div id="game-modal" aria-hidden="true">
+    <div id="game-box">
+      <button id="game-close" aria-label="Close game">✖</button>
+      <h3>Color Flood — Play</h3>
+      <div id="game-stats">Moves: <span id="game-moves">0</span></div>
+      <canvas id="game-canvas" width="400" height="400"></canvas>
+      <div id="game-controls"></div>
+      <div id="game-actions"><button id="game-restart">Restart</button></div>
+    </div>
+  </div>
+
 </body>
 </html>
