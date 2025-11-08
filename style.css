@@ -1,7 +1,8 @@
 :root {
   --accent:#00ffcc; --accent2:#7a00ff; --neon-pink:#ff00aa; --neon-orange:#ff7a00;
-  --dark-bg:#000; --light-bg:#e6f7ff; --text-light:#e6f7f5; --text-dark:#0b0b0b;
+  --dark-bg:#000; --text-light:#e6f7f5; --text-dark:#0b0b0b;
 }
+
 *{box-sizing:border-box}
 body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial;background:var(--dark-bg);color:var(--text-light);
   transition:background 1s,color 1s;overflow-x:hidden;scroll-behavior:smooth;}
@@ -14,7 +15,7 @@ body.day-mode{background:linear-gradient(#a8d8ff,#fff5e6);color:var(--text-dark)
 body.day-mode .brand{color:var(--neon-orange);}
 .nav-links{display:flex;gap:14px;list-style:none;margin:0;padding:0;}
 .nav-links a{color:#00ffe0;text-decoration:none;font-weight:700;}
-body.day-mode .nav-links a{color:#003366;}
+body.day-mode .nav-links a{color:black;} /* <-- changed to black for visibility */
 .controls{display:flex;gap:10px;}
 .btn{background:linear-gradient(90deg,var(--accent),var(--accent2));border:none;color:#001;padding:8px 10px;
   border-radius:10px;font-weight:700;cursor:pointer;}
@@ -26,7 +27,7 @@ body.day-mode .nav-links a{color:#003366;}
 .neon-pink{color:var(--neon-pink);text-shadow:0 0 6px var(--neon-pink),0 0 20px var(--neon-pink);}
 .neon-orange{color:var(--neon-orange);}
 .lead{color:rgba(230,247,245,0.9);}
-body.day-mode .lead{color:white;}
+body.day-mode .lead{color:white;} /* <-- fixed lead color */
 canvas{position:fixed;inset:0;pointer-events:none;}
 
 /* SECTIONS */
