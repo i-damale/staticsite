@@ -1,76 +1,94 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Somnath Damale | DevOps Portfolio</title>
-  <link rel="stylesheet" href="style.css" />
-  <script defer src="script.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Somnath Damale — DevOps · Cloud · AI</title>
+<link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
 </head>
-<body>
-  <header id="hero">
-    <div class="overlay"></div>
-    <h1>Hi, I'm <span>Somnath Damale</span></h1>
-    <p>DevOps Enthusiast • Cloud Explorer • Automation Geek</p>
-    <a href="#projects" class="btn">View Projects</a>
+<body class="dark-mode">
+  <header class="hero" id="hero">
+    <nav class="nav">
+      <div class="brand">Somnath Damale</div>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="https://www.linkedin.com/in/somnathdamale" target="_blank" rel="noopener" id="linkedin-link">LinkedIn</a></li>
+      </ul>
+      <div class="controls">
+        <button id="view-projects-cta" class="btn cta">View Projects</button>
+        <button id="theme-toggle" class="btn toggle" aria-pressed="false">☀️</button>
+      </div>
+    </nav>
+
+    <div class="hero-content">
+      <div id="ninja-stage" aria-hidden="true"></div>
+      <h1 id="typewriter" data-text='["Deploying Somnath Damale v2.0...", "DevOps · Cloud · DevSecOps · AI", "Engineering the Future: Where Cloud Meets Intelligence"]'></h1>
+      <p class="lead">I build secure CI/CD pipelines, automate cloud infra, and integrate AI into production workflows.</p>
+      <div class="pc-wrap" aria-hidden="true">
+        <img id="pc-image" src="assets/img/pc.png" alt="PC screenshot">
+      </div>
+    </div>
+
+    <canvas id="particle-canvas" aria-hidden="true"></canvas>
+    <div id="cosmic-layer" aria-hidden="true"></div>
   </header>
 
-  <section id="skills">
-    <h2>Skills</h2>
-    <div class="grid">
-      <div class="skill-card">Jenkins</div>
-      <div class="skill-card">AWS</div>
-      <div class="skill-card">Docker</div>
-      <div class="skill-card">GitHub Actions</div>
-      <div class="skill-card">SonarQube</div>
-      <div class="skill-card">Trivy</div>
-      <div class="skill-card">Terraform</div>
-      <div class="skill-card">Linux</div>
-    </div>
-  </section>
+  <main>
+    <section id="about" class="section glass">
+      <h2>About Me</h2>
+      <p>Analytical and detail-oriented DevOps Engineer with hands-on experience in CI/CD, automation, and cloud infrastructure. I combine analytics + automation to design resilient systems and secure deployment pipelines.</p>
+    </section>
 
-  <section id="projects">
-    <h2>Projects</h2>
-    <div class="project-grid">
-      <div class="project-card">
-        <img src="assets/project-thumbs/devsecops.png" alt="DevSecOps Pipeline" />
-        <div class="project-info">
-          <h3>Jenkins CI/CD + DevSecOps</h3>
-          <p>Multi-stage pipeline with security scans and Docker deployment.</p>
-          <a href="https://github.com/i-damale/devsecops-pipeline" target="_blank">GitHub ↗</a>
-        </div>
+    <section id="skills" class="section glass">
+      <h2>Skills</h2>
+      <div class="card-container">
+        <div class="card">AWS</div>
+        <div class="card">Docker</div>
+        <div class="card">Kubernetes</div>
+        <div class="card">Terraform</div>
+        <div class="card">Jenkins</div>
+        <div class="card">Python</div>
       </div>
-      <!-- Add more project cards here -->
-    </div>
-  </section>
+    </section>
 
-  <section id="experience">
-    <h2>Experience</h2>
-    <ul class="timeline">
-      <li>
-        <h3>Business Analyst @ Turing</h3>
-        <p>LLM training, automation, and analytics leadership.</p>
-      </li>
-      <li>
-        <h3>SPS Associate @ Amazon</h3>
-        <p>Compliance, API log analysis, and SOP improvements.</p>
-      </li>
-      <li>
-        <h3>CSA @ Amazon</h3>
-        <p>Root cause analysis and fraud detection.</p>
-      </li>
-    </ul>
-  </section>
+    <section id="projects" class="section glass">
+      <h2>Projects</h2>
+      <div class="card-container">
+        <div class="card project-card">CI/CD Pipeline with Jenkins</div>
+        <div class="card project-card">Cloud Infrastructure with Terraform</div>
+        <div class="card project-card">Container Orchestration using Kubernetes</div>
+        <div class="card project-card">Monitoring with Prometheus and Grafana</div>
+      </div>
+    </section>
 
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>Email: <a href="mailto:somnath.damale@gmail.com">somnath.damale@gmail.com</a></p>
-    <p>GitHub: <a href="https://github.com/i-damale" target="_blank">@i-damale</a></p>
-    <p>Location: Mumbai, India</p>
-  </section>
+    <section id="experience" class="section glass">
+      <h2>Experience</h2>
+      <div class="card-container">
+        <div class="card">Amazon | Seller Support (Aug 2022 - Dec 2023)</div>
+        <div class="card">Customer Support Associate (Oct 2021 - May 2022)</div>
+        <div class="card">Freelance DevOps Engineer (Present)</div>
+      </div>
+    </section>
+
+    <section id="contact" class="section glass">
+      <h2>Contact</h2>
+      <form id="contact-form">
+        <input type="text" id="name" placeholder="Your Name" required>
+        <input type="email" id="email" placeholder="Your Email" required>
+        <textarea id="message" placeholder="Your Message" required></textarea>
+        <button id="send-btn" type="submit">Send</button>
+      </form>
+      <div id="contact-status" role="status" aria-live="polite"></div>
+    </section>
+  </main>
 
   <footer>
-    <p>© 2025 Somnath Damale</p>
+    <p>© 2025 Somnath Damale | DevOps · Cloud · AI — <a href="https://www.linkedin.com/in/somnathdamale" target="_blank" rel="noopener">LinkedIn</a></p>
   </footer>
 </body>
 </html>
