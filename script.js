@@ -1,155 +1,162 @@
 
-/* Restored script: preserves original behavior and re-adds particles + typewriter if missing,
-   also applies unified hover behavior to all cards and adds theme toggle handling.
-*/
-
-// --- Preserve existing skill-card behavior if present ---
-try {
-  document.querySelectorAll('.skill-card').forEach(card => {
-    card.addEventListener('mouseenter', () => { card.style.boxShadow = '0 0 20px #00ffcc'; });
-    card.addEventListener('mouseleave', () => { card.style.boxShadow = 'none'; });
-  });
-} catch(e){ console.warn(e); }
-
-// --- Apply unified hover effect for various card types via JS (in case CSS can't target inline styles) ---
-['card','skill-card','project-card','timeline-card','tile'].forEach(cls => {
-  document.querySelectorAll('.' + cls).forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      el.style.boxShadow = '0 0 20px #00ffcc';
-      el.style.transform = 'scale(1.05)';
-      el.style.background = '#00ffcc';
-      el.style.color = '#000';
-      el.style.borderColor = '#00ffcc';
-    });
-    el.addEventListener('mouseleave', () => {
-      el.style.boxShadow = '';
-      el.style.transform = '';
-      el.style.background = '';
-      el.style.color = '';
-      el.style.borderColor = '';
-    });
-  });
-});
-
-// --- Theme toggle: create button if not present ---
-(function(){
-  let toggle = document.getElementById('theme-toggle');
-  if(!toggle){
-    // try to find nav to attach toggle
-    const nav = document.querySelector('nav') || document.querySelector('header') || document.body;
-    toggle = document.createElement('button');
-    toggle.id = 'theme-toggle';
-    toggle.textContent = '☀️';
-    toggle.style.marginLeft = '12px';
-    if(nav && nav.appendChild) nav.appendChild(toggle);
-  }
-  toggle.addEventListener('click', () => {
-    document.body.classList.toggle('light-mode');
-    if (document.body.classList.contains('light-mode')) {
-      toggle.textContent = '🌙';
+// --- Typewriter (preserved behavior) ---
+(function typewriterInit(){
+  const el = document.getElementById('typewriter');
+  if(!el) return;
+  const arr = JSON.parse(el.getAttribute('data-text'));
+  let i=0,j=0,forward=true;
+  function step(){
+    const current = arr[i];
+    if(forward){
+      j++; el.textContent = current.slice(0,j);
+      if(j===current.length){ forward=false; setTimeout(step,1200); return; }
     } else {
-      toggle.textContent = '☀️';
+      j--; el.textContent = current.slice(0,j);
+      if(j===0){ forward=true; i=(i+1)%arr.length; }
     }
-  });
+    setTimeout(step,60);
+  }
+  step();
 })();
 
-// --- Typewriter restore: if missing, add to header h1 ---
-(function(){
-  function initTypewriter(el, arr){
-    let i=0,j=0,forward=true;
-    function step(){
-      const cur = arr[i];
-      if(forward){ j++; el.textContent = cur.slice(0,j); if(j===cur.length){ forward=false; setTimeout(step,1200); return; } }
-      else { j--; el.textContent = cur.slice(0,j); if(j===0){ forward=true; i=(i+1)%arr.length; } }
-      setTimeout(step,60);
-    }
-    step();
-  }
-
-  let tw = document.getElementById('typewriter');
-  if(!tw){
-    // find header h1 and create a twin typewriter span below it
-    const header = document.getElementById('hero') || document.querySelector('header');
-    if(header){
-      const h1 = header.querySelector('h1');
-      if(h1){
-        tw = document.createElement('div');
-        tw.id = 'typewriter';
-        tw.setAttribute('aria-hidden','false');
-        tw.style.marginTop = '12px';
-        // prepare texts: use existing h1 text as first item, and a fallback list
-        const t1 = h1.textContent.trim();
-        const arr = [t1, 'DevOps · Cloud · DevSecOps · AI', 'Engineering the Future: Where Cloud Meets Intelligence'];
-        // empty h1 (keep original visible) and insert typewriter after it
-        // Do not modify original h1 text content (preserve), just place typewriter
-        h1.insertAdjacentElement('afterend', tw);
-        initTypewriter(tw, arr);
-      }
-    }
-  } else {
-    // if exists and has data-text attribute, use it
-    const data = tw.getAttribute('data-text');
-    if(data){
-      try{
-        const arr = JSON.parse(data);
-        initTypewriter(tw, arr);
-      }catch(e){ console.warn('typewriter data-text parse failed',e); }
-    }
-  }
-})();
-
-// --- Particle / fireflies background in header overlay ---
-(function(){
-  const header = document.getElementById('hero') || document.querySelector('header');
-  if(!header) return;
-  let overlay = header.querySelector('.overlay');
-  if(!overlay){
-    overlay = document.createElement('div');
-    overlay.className = 'overlay';
-    header.prepend(overlay);
-  }
-  // create canvas
-  let canvas = overlay.querySelector('canvas#particle-canvas');
-  if(!canvas){
-    canvas = document.createElement('canvas');
-    canvas.id = 'particle-canvas';
-    canvas.style.position = 'absolute';
-    canvas.style.inset = '0';
-    canvas.style.zIndex = '0';
-    overlay.appendChild(canvas);
-  }
+// --- Particle / fireflies with interactivity ---
+(function particlesInit(){
+  const canvas = document.getElementById('particle-canvas');
+  if(!canvas) return;
   const ctx = canvas.getContext('2d');
-  let w = canvas.width = overlay.clientWidth || header.clientWidth || window.innerWidth;
-  let h = canvas.height = overlay.clientHeight || header.clientHeight || 400;
+  let w = canvas.width = innerWidth;
+  let h = canvas.height = innerHeight;
+  window.addEventListener('resize', ()=>{ w=canvas.width=innerWidth; h=canvas.height=innerHeight; });
+  const colors = ['#00fff0','#8b00ff','#66fcf1','#b9a0ff'];
+  const mouse = { x: w/2, y: h/2, down:false };
+  addEventListener('mousemove', (e)=>{ mouse.x=e.clientX; mouse.y=e.clientY; });
+  addEventListener('mousedown', ()=>{ mouse.down=true; });
+  addEventListener('mouseup', ()=>{ mouse.down=false; });
+
   const particles = [];
-  const colors = ['#00ffcc','#66fcf1','#7a00ff'];
-  function rand(a,b){return Math.random()*(b-a)+a;}
-  for(let i=0;i<60;i++){
-    particles.push({x:rand(0,w), y:rand(0,h), r:rand(0.6,2.6), dx:rand(-0.3,0.3), dy:rand(-0.2,0.2), col: colors[Math.floor(Math.random()*colors.length)]});
+  for(let i=0;i<120;i++){
+    particles.push({
+      x: Math.random()*w,
+      y: Math.random()*h,
+      r: Math.random()*2.2+0.6,
+      dx: (Math.random()-0.5)*0.5,
+      dy: (Math.random()-0.5)*0.5,
+      col: colors[Math.floor(Math.random()*colors.length)],
+      baseR: Math.random()*2+0.6
+    });
   }
-  function resize(){ w = canvas.width = overlay.clientWidth || window.innerWidth; h = canvas.height = overlay.clientHeight || window.innerHeight; }
-  window.addEventListener('resize', resize);
+
   function draw(){
     ctx.clearRect(0,0,w,h);
+    // subtle starlines grid
+    ctx.globalAlpha = 0.08;
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0,0,w,h);
+
+    // particles
     particles.forEach(p=>{
-      p.x += p.dx; p.y += p.dy;
-      if(p.x > w) p.x = 0;
-      if(p.x < 0) p.x = w;
-      if(p.y > h) p.y = 0;
-      if(p.y < 0) p.y = h;
+      // attraction to mouse when nearby
+      const dx = mouse.x - p.x;
+      const dy = mouse.y - p.y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if(dist < 160){
+        p.x += dx * 0.02;
+        p.y += dy * 0.02;
+      } else {
+        p.x += p.dx;
+        p.y += p.dy;
+      }
+      // wrap
+      if(p.x < -10) p.x = w+10;
+      if(p.x > w+10) p.x = -10;
+      if(p.y < -10) p.y = h+10;
+      if(p.y > h+10) p.y = -10;
+
+      // twinkle
+      const tw = Math.sin((Date.now()/600) + p.r)*0.6 + 0.6;
       ctx.beginPath();
       ctx.fillStyle = p.col;
-      ctx.globalAlpha = 0.9;
-      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.globalAlpha = 0.9*tw;
+      ctx.arc(p.x,p.y,p.r*tw,0,Math.PI*2);
       ctx.fill();
+      // glow
       ctx.beginPath();
+      ctx.globalAlpha = 0.06*tw;
       ctx.fillStyle = p.col;
-      ctx.globalAlpha = 0.06;
-      ctx.arc(p.x,p.y,p.r*8,0,Math.PI*2);
+      ctx.arc(p.x,p.y,(p.r*10)*tw,0,Math.PI*2);
       ctx.fill();
       ctx.globalAlpha = 1;
     });
+
+    // connecting lines for close particles (galaxy feel)
+    for(let a=0;a<particles.length;a++){
+      for(let b=a+1;b<particles.length;b++){
+        const pa = particles[a], pb = particles[b];
+        const dx = pa.x - pb.x, dy = pa.y - pb.y;
+        const d = Math.sqrt(dx*dx+dy*dy);
+        if(d < 120){
+          ctx.beginPath();
+          ctx.strokeStyle = 'rgba(160,255,230,' + (0.08*(1 - d/120)) + ')';
+          ctx.lineWidth = 0.7;
+          ctx.moveTo(pa.x, pa.y);
+          ctx.lineTo(pb.x, pb.y);
+          ctx.stroke();
+        }
+      }
+    }
+
     requestAnimationFrame(draw);
   }
   draw();
+})();
+
+// --- Theme toggle ---
+(function themeToggle(){
+  const btn = document.getElementById('theme-toggle');
+  if(!btn) return;
+  btn.addEventListener('click', ()=>{
+    document.body.classList.toggle('light-mode');
+    const pressed = document.body.classList.contains('light-mode');
+    btn.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+    btn.textContent = pressed ? '🌙' : '☀️';
+  });
+})();
+
+// --- Ensure CTA buttons clickable (fix overlay issues) ---
+(function ensureClickable(){
+  // make sure interactive controls are above canvas
+  const cta = document.getElementById('view-projects-cta');
+  if(cta){
+    cta.addEventListener('click', ()=>{
+      const el = document.getElementById('projects');
+      if(el) el.scrollIntoView({behavior:'smooth'});
+    });
+  }
+  // LinkedIn link pointer events ensured via CSS; nothing else required.
+})();
+
+// --- Typewriter hover interactivity (pause/resume) ---
+(function typewriterHover(){
+  const el = document.getElementById('typewriter');
+  if(!el) return;
+  let paused = false;
+  el.addEventListener('mouseenter', ()=>{
+    el.classList.add('hovered');
+  });
+  el.addEventListener('mouseleave', ()=>{
+    el.classList.remove('hovered');
+  });
+})();
+
+// --- Contact form (no backend here) ---
+(function contactForm(){
+  const form = document.getElementById('contact-form');
+  if(!form) return;
+  form.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const status = document.getElementById('contact-status');
+    status.textContent = 'Demo: form would be sent to backend (configure API_BASE in production).';
+    form.reset();
+    setTimeout(()=> status.textContent = '', 4000);
+  });
 })();
