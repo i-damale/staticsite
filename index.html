@@ -19,30 +19,41 @@
         <li><a href="#connect">Connect</a></li>
       </ul>
       <div class="controls">
+        <button id="refresh-repos" class="btn" title="Refresh Projects">🔁</button>
         <button id="view-projects-cta" class="btn cta">View Projects</button>
         <button id="theme-toggle" class="btn toggle" aria-pressed="false" title="Toggle theme">☀️</button>
       </div>
     </nav>
 
     <div class="hero-content solid-header" id="hero-content">
-      <h1 id="typewriter" aria-live="polite"
-        data-text='["Deploying DevOpsXCloud v2.0...", "DevOps · Cloud · DevSecOps · AI", "Engineering the Future:|Where Cloud Meets Intelligence"]'></h1>
+      <h1 id="typewriter" aria-live="polite" data-text='["Deploying DevOpsXCloud v2.0...", "DevOps · Cloud · DevSecOps · AI", "Engineering the Future:|Where Cloud Meets Intelligence"]'></h1>
       <p class="lead">I build secure CI/CD pipelines, automate cloud infra, and integrate AI into production workflows.</p>
     </div>
 
-    <canvas id="particle-canvas"></canvas>
-    <canvas id="day-canvas"></canvas>
-    <canvas id="trail-canvas"></canvas>
+    <!-- Visual layers -->
+    <canvas id="particle-canvas" aria-hidden="true"></canvas>
+    <div id="cosmic-layer" aria-hidden="true"></div>
+    <!-- cloud-layer kept for subtle overlay effects (optional) -->
+    <div id="cloud-layer" aria-hidden="true"></div>
+
+    <!-- Day canvas draws the full daytime scene (sun, clouds, hills, lake, birds, kids, swans) -->
+    <canvas id="day-canvas" aria-hidden="true"></canvas>
+
+    <!-- cursor trail canvas -->
+    <canvas id="trail-canvas" aria-hidden="true"></canvas>
+
+    <!-- subtle HUD overlay for cyberpunk night -->
+    <div id="hud-layer" aria-hidden="true">
+      <svg class="hud-chip" viewBox="0 0 200 200" preserveAspectRatio="xMinYMin slice"><rect x="10" y="10" width="180" height="180" rx="12" ry="12" fill="none" stroke="#00ffcc" stroke-opacity="0.06" stroke-width="2"/></svg>
+      <svg class="hud-widget" viewBox="0 0 120 60"><circle cx="30" cy="30" r="26" fill="none" stroke="#7a00ff" stroke-opacity="0.06" stroke-width="2"/></svg>
+    </div>
+
   </header>
 
   <main>
-    <section id="about" class="section glass">
-      <h2>About Me</h2>
-      <p>Analytical and detail-oriented DevOps Engineer with hands-on experience in CI/CD, automation, and cloud infrastructure.</p>
-    </section>
+    <section id="about" class="section glass"><h2>About Me</h2><p>Analytical and detail-oriented DevOps Engineer with hands-on experience in CI/CD, automation, and cloud infrastructure.</p></section>
 
-    <section id="skills" class="section glass">
-      <h2>Skills</h2>
+    <section id="skills" class="section glass"><h2>Skills</h2>
       <div class="card-container">
         <div class="card">AWS</div>
         <div class="card">Docker</div>
@@ -53,34 +64,43 @@
       </div>
     </section>
 
-    <section id="projects" class="section glass">
-      <div style="display:flex;align-items:center;justify-content:space-between">
-        <h2>Projects</h2>
-        <button id="refresh-repos-section" class="btn">🔁 Refresh Projects</button>
-      </div>
-      <div id="projects-list" class="card-container"></div>
+    <section id="projects" class="section glass"><h2>Projects</h2>
+      <div id="projects-list" class="card-container"><!-- filled by JS --></div>
+      <p class="muted">Click <strong>🔁</strong> to fetch the latest public repositories from GitHub.</p>
     </section>
 
-    <section id="resume" class="section glass">
-      <h2>Resume</h2>
-      <iframe src="assets/pdf/Somnath_Damale_DevOps_Resume.pdf" title="Resume"></iframe>
-      <div class="resume-actions">
-        <a class="btn" href="assets/pdf/Somnath_Damale_DevOps_Resume.pdf" download>Download Resume</a>
+    <section id="resume" class="section glass"><h2>Resume</h2>
+      <div class="resume-viewer">
+        <iframe src="assets/pdf/Somnath_Damale_DevOps_Resume.pdf" title="Resume" aria-label="Resume preview"></iframe>
+        <div class="resume-actions"><a class="btn" href="assets/pdf/Somnath_Damale_DevOps_Resume.pdf" download>Download Resume (PDF)</a></div>
       </div>
     </section>
 
-    <section id="connect" class="section glass">
-      <h2>Connect</h2>
+    <section id="connect" class="section glass"><h2>Connect with Me</h2>
       <div class="social-icons">
-        <a href="https://www.linkedin.com/in/somnathdamale" target="_blank"><img src="assets/icons/linkedin.svg" alt="LinkedIn"></a>
-        <a href="https://github.com/i-damale" target="_blank"><img src="assets/icons/github.svg" alt="GitHub"></a>
-        <a href="mailto:somnath.damale@gmail.com"><img src="assets/icons/email.svg" alt="Email"></a>
+        <a class="icon" href="https://www.linkedin.com/in/somnathdamale" target="_blank" rel="noopener" aria-label="LinkedIn"><img src="assets/icons/linkedin.svg" alt="LinkedIn"></a>
+        <a class="icon" href="https://github.com/i-damale" target="_blank" rel="noopener" aria-label="GitHub"><img src="assets/icons/github.svg" alt="GitHub"></a>
+        <a class="icon" href="mailto:somnath.damale@gmail.com" aria-label="Email"><img src="assets/icons/email.svg" alt="Email"></a>
       </div>
     </section>
   </main>
 
-  <footer>
-    <p>© 2025 Somnath Damale | DevOps · Cloud · AI</p>
-  </footer>
+  <footer id="site-footer"><p id="footer-text">© 2025 Somnath Damale | DevOps · Cloud · AI</p></footer>
+
+  <!-- Easter egg game and controls -->
+  <button id="game-button" title="Play a game">🎮</button>
+  <button id="sound-toggle" title="Toggle sounds (chirps) for day/night">🔈</button>
+
+  <div id="game-modal" aria-hidden="true">
+    <div id="game-box">
+      <button id="game-close" aria-label="Close game">✖</button>
+      <h3>Color Flood — Play</h3>
+      <div id="game-stats">Moves: <span id="game-moves">0</span></div>
+      <canvas id="game-canvas" width="600" height="600"></canvas>
+      <div id="game-controls"></div>
+      <div id="game-actions"><button id="game-restart">Restart</button></div>
+    </div>
+  </div>
+
 </body>
 </html>
