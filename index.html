@@ -1,107 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Somnath Damale | DevOps & Cloud Engineer</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Somnath Damale | DevOps Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
   <script defer src="script.js"></script>
 </head>
-<body class="dark-mode">
-  <header>
-
-  </head>
-<body class="theme-cyber">
-<nav class="nav">
-  <div class="brand">Somnath Damale</div>
-  <ul class="nav-links">
-    <li><a href="index.html" class="active">Home</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="projects.html">Projects</a></li>
-    <li><a href="contact.html">Contact</a></li>
-    <li><a href="https://github.com/i-damale" target="_blank">GitHub</a></li>
-  </ul>
-  <button id="themeBtn" class="icon-btn" aria-label="toggle theme">🌙</button>
-</nav>
-
-<header class="hero">
-  <div class="hero-content">
-    <h1 id="typewriter" data-text='["Deploying Somnath Damale v2.0...", "DevOps · Cloud · DevSecOps · AI", "Engineering the Future: Where Cloud Meets Intelligence"]'></h1>
-    <p class="lead">I build secure CI/CD pipelines, automate cloud infra, and integrate AI into production workflows.</p>
-    <div class="cta">
-      <a class="btn" href="projects.html">View Projects</a>
-      <a class="btn ghost" href="contact.html">Hire Me</a>
-    </div>
-  </div>
-  <canvas id="particle-canvas"></canvas>
-</header>
-    <nav>
-      <div class="brand">Somnath Damale</div>
-      <ul>
-        <li><a href="#about">About</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-      <button id="theme-toggle">☀️</button>
-    </nav>
+<body>
+  <header id="hero">
+    <div class="overlay"></div>
+    <h1>Hi, I'm <span>Somnath Damale</span></h1>
+    <p>DevOps Enthusiast • Cloud Explorer • Automation Geek</p>
+    <a href="#projects" class="btn">View Projects</a>
   </header>
 
-  <section id="home" class="hero-section">
-    <h1 id="typewriter">DevOps | Cloud | Automation</h1>
-    <p class="subtitle">Building scalable infrastructure with precision and automation.</p>
-  </section>
-
-  <section id="about" class="section glass">
-    <h2>About Me</h2>
-    <p>I'm Somnath Damale, a DevOps and Cloud Engineer focused on CI/CD, automation, and cloud-native systems.
-       I design secure, scalable systems that merge efficiency with innovation.</p>
-  </section>
-
-  <section id="skills" class="section glass">
+  <section id="skills">
     <h2>Skills</h2>
-    <div class="card-container">
-      <div class="card">AWS</div>
-      <div class="card">Docker</div>
-      <div class="card">Kubernetes</div>
-      <div class="card">Terraform</div>
-      <div class="card">Jenkins</div>
-      <div class="card">Python</div>
+    <div class="grid">
+      <div class="skill-card">Jenkins</div>
+      <div class="skill-card">AWS</div>
+      <div class="skill-card">Docker</div>
+      <div class="skill-card">GitHub Actions</div>
+      <div class="skill-card">SonarQube</div>
+      <div class="skill-card">Trivy</div>
+      <div class="skill-card">Terraform</div>
+      <div class="skill-card">Linux</div>
     </div>
   </section>
 
-  <section id="projects" class="section glass">
+  <section id="projects">
     <h2>Projects</h2>
-    <div class="card-container">
-      <div class="card">CI/CD Pipeline with Jenkins</div>
-      <div class="card">Cloud Infrastructure with Terraform</div>
-      <div class="card">Container Orchestration using Kubernetes</div>
-      <div class="card">Monitoring with Prometheus and Grafana</div>
+    <div class="project-grid">
+      <div class="project-card">
+        <img src="assets/project-thumbs/devsecops.png" alt="DevSecOps Pipeline" />
+        <div class="project-info">
+          <h3>Jenkins CI/CD + DevSecOps</h3>
+          <p>Multi-stage pipeline with security scans and Docker deployment.</p>
+          <a href="https://github.com/i-damale/devsecops-pipeline" target="_blank">GitHub ↗</a>
+        </div>
+      </div>
+      <!-- Add more project cards here -->
     </div>
   </section>
 
-  <section id="experience" class="section glass">
+  <section id="experience">
     <h2>Experience</h2>
-    <div class="card-container">
-      <div class="card">Amazon | Seller Support (Aug 2022 - Dec 2023)</div>
-      <div class="card">Customer Support Associate (Oct 2021 - May 2022)</div>
-      <div class="card">Freelance DevOps Engineer (Present)</div>
-    </div>
+    <ul class="timeline">
+      <li>
+        <h3>Business Analyst @ Turing</h3>
+        <p>LLM training, automation, and analytics leadership.</p>
+      </li>
+      <li>
+        <h3>SPS Associate @ Amazon</h3>
+        <p>Compliance, API log analysis, and SOP improvements.</p>
+      </li>
+      <li>
+        <h3>CSA @ Amazon</h3>
+        <p>Root cause analysis and fraud detection.</p>
+      </li>
+    </ul>
   </section>
 
-  <section id="contact" class="section glass">
+  <section id="contact">
     <h2>Contact</h2>
-    <form id="contact-form">
-      <input type="text" placeholder="Your Name" required>
-      <input type="email" placeholder="Your Email" required>
-      <textarea placeholder="Your Message" required></textarea>
-      <button type="submit">Send</button>
-    </form>
+    <p>Email: <a href="mailto:somnath.damale@gmail.com">somnath.damale@gmail.com</a></p>
+    <p>GitHub: <a href="https://github.com/i-damale" target="_blank">@i-damale</a></p>
+    <p>Location: Mumbai, India</p>
   </section>
 
   <footer>
-    <p>© 2025 Somnath Damale | DevOps & Cloud Engineer</p>
+    <p>© 2025 Somnath Damale</p>
   </footer>
 </body>
 </html>
