@@ -16,7 +16,7 @@
         <li><a href="#skills">Skills</a></li>
         <li><a href="#projects">Projects</a></li>
         <li><a href="#resume">Resume</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#connect">Connect</a></li>
         <li><a href="mailto:somnath.damale@gmail.com" id="email-link">Email</a></li>
         <li><a href="https://github.com/i-damale" target="_blank" id="github-link">GitHub</a></li>
         <li><a href="https://www.linkedin.com/in/somnathdamale" target="_blank" id="linkedin-link">LinkedIn</a></li>
@@ -30,16 +30,17 @@
 
     <div class="hero-content">
       <div id="ninja-stage" aria-hidden="true"></div>
-      <h1 id="typewriter" data-text='["Deploying Somnath Damale v2.0...", "DevOps · Cloud · DevSecOps · AI", "Engineering the Future: Where Cloud Meets Intelligence"]'></h1>
+      <h1 id="typewriter" data-text='["Deploying DevOpsXCloud v2.0...", "Devops.X Cloud. DevSecOps.X AI", "Engineering the Future: Where Cloud Meets Intelligence"]'></h1>
       <p class="lead">I build secure CI/CD pipelines, automate cloud infra, and integrate AI into production workflows.</p>
       <div class="pc-wrap" aria-hidden="true">
-        <img id="pc-image" src="assets/img/pc.png" alt="PC screenshot">
+        <img id="pc-image" src="assets/img/pc.png" alt="">
       </div>
     </div>
 
     <canvas id="particle-canvas" aria-hidden="true"></canvas>
     <div id="cosmic-layer" aria-hidden="true"></div>
     <div id="cloud-layer" aria-hidden="true"></div>
+    <canvas id="trail-canvas" aria-hidden="true"></canvas>
   </header>
 
   <main>
@@ -63,11 +64,9 @@
     <section id="projects" class="section glass">
       <h2>Projects</h2>
       <div id="projects-list" class="card-container">
-        <!-- initial project items (will be refreshed via GitHub API) -->
+        <!-- initial items; refresh will replace -->
         <a class="card project-card" href="https://github.com/i-damale/mern-devsecops-project" target="_blank">mern-devsecops-project</a>
         <a class="card project-card" href="https://github.com/i-damale/git_tutorial" target="_blank">git_tutorial</a>
-        <a class="card project-card" href="https://github.com/i-damale/linux_tutorial" target="_blank">linux_tutorial</a>
-        <a class="card project-card" href="https://github.com/i-damale/static_landing_page" target="_blank">static_landing_page</a>
       </div>
       <p class="muted">Click <strong>Refresh Projects</strong> to fetch the latest public repositories from GitHub.</p>
     </section>
@@ -109,24 +108,13 @@
       </div>
     </section>
 
-    <section id="experience" class="section glass">
-      <h2>Experience</h2>
-      <div class="card-container">
-        <div class="card">Amazon | Seller Support (Aug 2022 - Dec 2023)</div>
-        <div class="card">Customer Support Associate (Oct 2021 - May 2022)</div>
-        <div class="card">Freelance DevOps Engineer (Present)</div>
+    <section id="connect" class="section glass">
+      <h2>Connect with Me</h2>
+      <div class="social-icons">
+        <a class="icon" href="https://www.linkedin.com/in/somnathdamale" target="_blank" rel="noopener" aria-label="LinkedIn"><img src="assets/icons/linkedin.svg" alt="LinkedIn"></a>
+        <a class="icon" href="https://github.com/i-damale" target="_blank" rel="noopener" aria-label="GitHub"><img src="assets/icons/github.svg" alt="GitHub"></a>
+        <a class="icon" href="mailto:somnath.damale@gmail.com" aria-label="Email"><img src="assets/icons/email.svg" alt="Email"></a>
       </div>
-    </section>
-
-    <section id="contact" class="section glass">
-      <h2>Contact</h2>
-      <form id="contact-form">
-        <input type="text" id="name" placeholder="Your Name" required>
-        <input type="email" id="email" placeholder="Your Email" required>
-        <textarea id="message" placeholder="Your Message" required></textarea>
-        <button id="send-btn" type="submit">Send</button>
-      </form>
-      <div id="contact-status" role="status" aria-live="polite"></div>
     </section>
   </main>
 
