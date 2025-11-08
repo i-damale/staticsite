@@ -1,62 +1,7 @@
 
-:root{
-  --accent: #00ffcc;
-  --accent2: #7a00ff;
-  --neon-pink: #ff00aa;
-  --light-blue: #00baff;
-  --dark-bg: #000000;
-  --light-bg: #f6f7f8;
-  --text-light: #e6f7f5;
-  --text-dark: #0b0b0b;
-  --solid-header-bg: rgba(6,6,8,0.92);
-}
-
-*{box-sizing:border-box}html,body{height:100%}body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial;background:var(--dark-bg);color:var(--text-light);transition:background .36s,color .36s;overflow-x:hidden}
-body.light-mode{background:var(--light-bg);color:var(--text-dark)}
-
-/* nav */
-.nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;position:fixed;top:0;left:0;right:0;z-index:1000;background:transparent}
-.brand{font-weight:800;color:var(--accent);pointer-events:auto}
-.controls{display:flex;gap:8px;align-items:center}
-.btn{background:linear-gradient(90deg,var(--accent),var(--accent2));border:none;color:#001;padding:8px 12px;border-radius:8px;font-weight:700;cursor:pointer}
-
-/* hero */
-.hero{position:relative;min-height:72vh;display:flex;align-items:center;justify-content:center;padding-top:70px;overflow:hidden}
-.solid-header{background:var(--solid-header-bg);padding:28px;border-radius:12px;backdrop-filter:blur(6px);box-shadow:0 8px 30px rgba(0,0,0,0.6)}
-
-/* typewriter */
-#typewriter{font-size:2.6rem;color:var(--accent);font-weight:800;letter-spacing:0.4px;transition:transform .18s,filter .18s,box-shadow .18s}
-.neon-pink{color:var(--neon-pink);text-shadow:0 0 6px var(--neon-pink),0 0 20px var(--neon-pink);}
-
-/* canvas layers */
-#particle-canvas, #cosmic-layer, #cloud-layer, #trail-canvas{position:fixed;inset:0;z-index:50;pointer-events:none}
-#cosmic-layer{mix-blend-mode: screen;opacity:0.9;filter:blur(14px) saturate(110%)}
-
-/* clouds */
-#cloud-layer{pointer-events:none;z-index:55;mix-blend-mode:screen}
-.cloud{position:absolute;background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.06), rgba(255,255,255,0.01));filter:blur(20px);opacity:0.18;border-radius:50%}
-
-/* sections */
-.section{padding:4rem 1.25rem;max-width:1100px;margin:0 auto;text-align:center;position:relative;z-index:60}
-.glass{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04);padding:18px;border-radius:12px;margin-top:28px}
-
-/* cards */
-.card-container{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:1.25rem}
-.card{background:#0f1214;padding:1.2rem 1.6rem;border-radius:10px;color:var(--text-light);min-width:220px;text-align:center;font-weight:700;border:1px solid transparent;transition:transform .28s,box-shadow .28s,background .28s,color .28s,filter .28s}
-.card:hover{background:var(--accent);color:#001;transform:translateY(-6px) scale(1.04);box-shadow:0 8px 30px rgba(0,255,204,0.15);border-color:var(--accent)}
-
-/* resume viewer */
-.resume-viewer iframe{width:100%;height:560px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:#fff;max-width:900px}
-
-/* social icons minimalist */
-.social-icons{display:flex;gap:20px;justify-content:center;align-items:center;margin-top:18px}
-.social-icons .icon{display:inline-block;width:64px;height:64px;border-radius:10px;background:#fff;padding:10px;box-shadow:0 6px 20px rgba(0,0,0,0.12);transition:transform .12s,box-shadow .12s}
-.social-icons .icon img{width:100%;height:100%}
-.social-icons .icon:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,0.18)}
-
-/* footer */
-footer{padding:28px;text-align:center;color:rgba(160,255,230,0.9);margin-top:40px}
-body.light-mode footer{color:black}
-
-/* responsive */
-@media(max-width:900px){.nav-links{display:none}#typewriter{font-size:1.8rem}.card{min-width:140px}.social-icons .icon{width:48px;height:48px}}
+:root{--bg:#fff2e6;--accent:#f05f5f;--ink:#2b2b2b}
+body.anime{font-family: 'Segoe UI', system-ui, Arial; background: linear-gradient(180deg,#fff1e0,#ffe6f0); color:var(--ink); margin:0; padding:0}
+.hero{padding:60px 20px;text-align:center;background:url('assets/img/anime_bg.svg') center/cover no-repeat}
+.hero h1{font-size:3rem;color:#f05f5f;margin:0}
+section{padding:32px 20px;max-width:900px;margin:24px auto;background:rgba(255,255,255,0.6);border-radius:12px}
+footer{text-align:center;padding:20px;margin-top:30px;opacity:0.8}
